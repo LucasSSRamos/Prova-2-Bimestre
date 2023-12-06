@@ -13,6 +13,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Revisao.Application\Revisao.Application.csproj" />
     <ProjectReference Include="..\Revisao.Domain\Revisao.Domain.csproj" />
+    <ProjectReference Include="..\Revisao.Data\Repositories" />
   </ItemGroup>
 
 </Project>
