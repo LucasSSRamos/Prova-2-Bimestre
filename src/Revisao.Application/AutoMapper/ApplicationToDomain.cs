@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Revisao.Application.ViewModels;
+using Revisao.Application.ViewModels.Request;
 using Revisao.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,14 +9,15 @@ using System.Threading.Tasks;
 
 namespace Revisao.Application.AutoMapper
 {
-	public class ApplicationToDomain : Profile
-	{
-		public ApplicationToDomain()
-		{
+    public class ApplicationToDomain : Profile
+    {
+       public ApplicationToDomain()
+       {
+            CreateMap<MegaSenaViewModel, JogoMegaSena>()
+            .ConstructUsing(q => new JogoMegaSena(q.Nome,q.Cpf,q.primeiroNro,q.segundoNro,q.terceiroNro,q.quartoNro,q.quintoNro,q.sextoNro,q.datajogo));
 
-			CreateMap<RegistroJogoViewModel, RegistroJogo>()
-			   .ConstructUsing(r => new RegistroJogo(r.primeiroNumero, r.segundoNumero, r.terceiroNumero, r.quartoNumero, r.quintoNumero, r.sextoNumero));
-
-		}
-	}
+            CreateMap<NovoRegistroMegaSenaViewModel, JogoMegaSena>()
+            .ConstructUsing(q => new JogoMegaSena(q.Nome, q.Cpf, q.primeiroNro, q.segundoNro, q.terceiroNro, q.quartoNro, q.quintoNro, q.sextoNro, q.datajogo));
+       }
+    }
 }
