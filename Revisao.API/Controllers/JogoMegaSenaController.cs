@@ -1,35 +1,59 @@
-﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Revisao.Application.Interfaces;
 using Revisao.Application.ViewModels;
+using Revisao.Application.ViewModels.Request;
 
 namespace Revisao.API.Controllers
 {
-	[ApiController]
-	[Route("[controller]")]
-	public class JogoMegaSenaController : ControllerBase
-	{
+    public class MegaSenaController : ControllerBase
+    {
+        private readonly IMegaSenaServices _megaSenaService;
 
-		private readonly IRegistroJogoService _registroJogoService;
-		private readonly IMapper _mapper;
+        public MegaSenaController(IMegaSenaServices megaSenaService)
+        {
+            _megaSenaService = megaSenaService;
+        }
 
-		public JogoMegaSenaController(IRegistroJogoService registroJogoService, IMapper mapper)
-		{
-			_registroJogoService = registroJogoService;
-			_mapper = mapper;
-		}
+        [HttpGet(Name = "ObterTodosOsJogos")]
+        public IActionResult ObterTodosOsJogos(MegaSenaViewModel megaSena)
+        {
+            if(megaSena == null)
+            {
+                _megaSenaService.ObterTodosOsJogos(megaSena);
 
-		[HttpGet(Name = "ObterTodosOsJogos")]
-		public async Task<IActionResult> ObterTodosOsJogos()
-		{
-			return Ok(await _registroJogoService.ObterTodosOsJogos());
-		}
+                return Ok();
+            }
+            else 
+            {
+                return BadRequest("Nenhum jogo salvo"); 
+            }
 
+        }
 
-		[HttpPost(Name = "RegistrarNovoJogo")]
-		public async Task<IActionResult> RegistrarNovoJogo(RegistroJogoViewModel registroJogoViewModel)
-		{
-			return Ok(_registroJogoService.RegistrarJogo(registroJogoViewModel));
-		}
-	}
+        [HttpPost(Name = "RegistrarJogo")]
+        public IActionResult RegistrarJogo(NovoRegistroMegaSenaViewModel megasena)
+        {
+            if (megasena.primeiroNro != megasena.segundoNro && megasena.primeiroNro != megasena.terceiroNro
+                && megasena.primeiroNro != megasena.quartoNro && megasena.primeiroNro != megasena.quintoNro
+                && megasena.primeiroNro != megasena.sextoNro
+
+                && megasena.segundoNro != megasena.terceiroNro && megasena.segundoNro != megasena.quartoNro
+                && megasena.segundoNro != megasena.quintoNro && megasena.segundoNro != megasena.sextoNro
+
+                && megasena.terceiroNro != megasena.quartoNro && megasena.terceiroNro != megasena.quintoNro
+                && megasena.terceiroNro != megasena.sextoNro
+
+                && megasena.quartoNro != megasena.quintoNro && megasena.terceiroNro != megasena.sextoNro
+
+                && megasena.quintoNro != megasena.sextoNro)
+            {
+                _megaSenaService.RegistrarJogo(megasena);
+                return Ok("Jogo Registrado com sucesso!");
+            }
+            else
+            {
+                return BadRequest("Dados incorretos, existem números repetidos no jogo");
+            }
+        }
+    }
 }
