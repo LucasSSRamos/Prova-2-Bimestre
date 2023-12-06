@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\src\Revisao.Application\Revisao.Application.csproj" />
+    <ProjectReference Include="..\src\Revisao.Data\Revisao.Data.csproj" />
   </ItemGroup>
 
 </Project>
